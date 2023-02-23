@@ -1,5 +1,17 @@
 ## Задание № 1
 
+cat > pets
+
+cat pets
+
+cat > pack_animals
+
+cat pack_animals
+
+cat pets pack_animals > all_animals
+
+cat all_animals
+
 mv all_animals human_friends
 
 cat human_friends
@@ -29,6 +41,7 @@ git remote add origin git@github.com:VladimirTialin/GeekBrainsFinalTask.git
 git branch -M main
 
 git push -u origin main
+
 
 ## Задание № 2
 
