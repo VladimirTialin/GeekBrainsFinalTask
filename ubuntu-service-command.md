@@ -1,4 +1,4 @@
-##Задание № 1
+## Задание № 1
 
 mv all_animals human_friends
 cat human_friends
@@ -16,7 +16,7 @@ git remote add origin git@github.com:VladimirTialin/GeekBrainsFinalTask.git
 git branch -M main
 git push -u origin main
 
-##Задание № 2
+## Задание № 2
 
 mkdir task2
 ll
@@ -28,7 +28,7 @@ git add task2/
 git commit -m "task 2 finish"
 git push
 
-##Задание № 3
+## Задание № 3
 
 sudo apt install mysql-server
 sudo service mysql restart
@@ -39,7 +39,7 @@ mysql -u root -p
 show databases;
 exit
 
-##Задание № 4
+## Задание № 4
 
 wget http://archive.ubuntu.com/ubuntu/pool/universe/v/vifm/vifm_0.12-1_amd64.deb
 ll
