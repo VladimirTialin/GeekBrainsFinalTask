@@ -37,6 +37,7 @@ mysql -u root -p
 ***В терминале mysql***
 
 show databases;
+
 exit
 
 ## Задание № 4
