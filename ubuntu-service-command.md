@@ -43,6 +43,7 @@ git branch -M main
 git push -u origin main
 
 
+
 ##Задание № 2
 
 mkdir task2
@@ -62,6 +63,7 @@ git add task2/
 git commit -m "task 2 finish"
 
 git push
+
 
 
 ##Задание № 3
