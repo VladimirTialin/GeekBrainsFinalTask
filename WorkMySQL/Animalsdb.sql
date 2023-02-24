@@ -18,9 +18,9 @@ CREATE TABLE Pets(
 );
 CREATE TABLE PackAnimals(
     AnimalsId INT PRIMARY KEY AUTO_INCREMENT,
-    PackId INT,
-    FOREIGN KEY (PackId) REFERENCES Animals(AnimalsId),
-    Pack VARCHAR(20) NOT NULL
+    PacksId INT,
+    FOREIGN KEY (PacksId) REFERENCES Animals(AnimalsId),
+    PackName VARCHAR(20) NOT NULL
 );
 CREATE TABLE Commands(
     CommandsId INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,11 +32,11 @@ VALUES
 	(1, 'Cat'),
 	(1, 'Dog'),
 	(1, 'Hamster');
-INSERT PackAnimals(PackId, Pack) 
+INSERT PackAnimals(PacksId, PackName) 
 VALUES
 	(2, 'Horse'),
 	(2, 'Donkey'), 
-	(2, 'CameL'); 
+	(2, 'Camel'); 
 INSERT Commands(name)
 VALUES
 	('Сидеть'),
@@ -113,7 +113,6 @@ CREATE TABLE Camel(
     CommandId INT NOT NULL,
     FOREIGN KEY (CommandId) REFERENCES Commands(CommandsId)
 );
--- End Task 8
 -- заполнение таблиц домашними животными
 INSERT Cat(CatsId, Name, BirthDay, CommandId) VALUES
 (1, 'Барсик', '20190328', 1),
@@ -177,3 +176,24 @@ SELECT * FROM Horse UNION
 SELECT * FROM Camel UNION
 SELECT * FROM Donkey;
 -- End Task 9
+
+DROP TABLE Camel;
+DELETE FROM PackAnimals WHERE  AnimalsId=3;
+SELECT * FROM PackAnimals;
+SELECT * FROM Horse UNION SELECT * FROM Donkey;
+-- Объединяем лошадей и ослов
+CREATE TABLE MergingPackAnimals(
+    MergingId INT PRIMARY KEY AUTO_INCREMENT,
+    PacksId INT NOT NULL,
+    FOREIGN KEY (PacksId) REFERENCES PackAnimals(AnimalsId),
+    Name VARCHAR(20) NOT NULL,
+    BirthDay DATE NOT NULL,
+    CommandId INT NOT NULL,
+    FOREIGN KEY (CommandId) REFERENCES Commands(CommandsId)
+);
+-- Наполнение объединенной таблицы
+INSERT INTO MergingPackAnimals ( PacksId, Name, BirthDay, CommandId) 
+SELECT HorsesId, Name, BirthDay, CommandId FROM Horse
+UNION SELECT DonkeysId, Name, BirthDay, CommandId FROM Donkey;
+SELECT * FROM MergingPackAnimals;
+-- End Task 10
