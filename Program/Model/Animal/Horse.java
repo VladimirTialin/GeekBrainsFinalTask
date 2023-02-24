@@ -1,6 +1,6 @@
 package GeekBrainsFinalTask.Program.Model.Animal;
 import java.util.List;
-public class Horse extends Sumpter {
+public class Horse extends PackAnimals {
     public Horse(String name, int age) {
         super(name, age);
     }
