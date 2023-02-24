@@ -4,7 +4,7 @@ import java.util.List;
 public abstract class Animal {
     private Integer id = null;
     private String name;
-    private final int age;
+    private int age;
     private List<String> commands = new ArrayList<>();
     public Animal(String name, int age) {
         this.name = name;
@@ -41,9 +41,9 @@ public abstract class Animal {
     }
     public void showCommands(){
         if (commands.size() == 0) {
-            System.out.println("Такой команды не знаю!");
+            System.out.println("Давай обучаться!/n");
         } else {
-            System.out.println("Я знаю следующие команды:");
+            System.out.println("Я знаю команды:");
             for (String command : this.commands) {
                 System.out.println(command);
             }
@@ -52,7 +52,7 @@ public abstract class Animal {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() +
-                ": ID " + id +
-                ", " + name + ", возраст в месяцах: " + age;
+                ":  № " + id +
+                ", " + name + ", возраст в годах: " + age;
     }
 }
