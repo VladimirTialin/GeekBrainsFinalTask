@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS Human_friends;
 CREATE DATABASE Human_friends;
 USE Human_friends;
 -- End Task 7
@@ -152,7 +153,7 @@ INSERT Horse(HorsesId, Name, BirthDay, CommandId) VALUES
 (1, 'Шейтан','20221003', 9);
 INSERT Donkey(DonkeysId, Name, BirthDay, CommandId) VALUES
 (2, 'Альтаир', '20221128', 13),
-(2, 'Чуп','20200801', 14),
+(2, 'Чуп','20210222', 14),
 (2, 'Биггс','20210120', 15),
 (2, 'Жизель','20180424', 16),
 (2, 'Сурия','20170909', 15),
@@ -197,3 +198,60 @@ SELECT HorsesId, Name, BirthDay, CommandId FROM Horse
 UNION SELECT DonkeysId, Name, BirthDay, CommandId FROM Donkey;
 SELECT * FROM MergingPackAnimals;
 -- End Task 10
+
+CREATE TABLE YoungAnimals(
+    AnimalId INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(20) NOT NULL,
+    BirthDay DATE NOT NULL,
+    Age INT NOT NULL
+)
+SELECT Name, BirthDay, TIMESTAMPDIFF(MONTH, Young.BirthDay, CURDATE()) AS Age 
+    FROM (
+        SELECT * FROM MergingPackAnimals UNION 
+        SELECT * FROM Cat UNION 
+        SELECT * FROM Dog UNION
+        SELECT * FROM Hamster)
+    AS Young
+WHERE TIMESTAMPDIFF(MONTH, Young.BirthDay, CURDATE()) < 36 and TIMESTAMPDIFF(MONTH, Young.BirthDay, CURDATE()) > 12;
+-- Функция вычисления возраста с точностью до месяца
+DELIMITER //
+CREATE FUNCTION AgeAnimal(dates date)
+returns text
+deterministic
+BEGIN
+declare months int;
+declare years int; 
+Set months=(TIMESTAMPDIFF(MONTH,dates,curdate()));
+set years=(TIMESTAMPDIFF(YEAR,dates,curdate()));
+return CONCAT(years,' г. ',
+IF((months/12)=years,0,months div 12),' м.');
+END//
+DELIMITER ;
+-- конец функции 
+SELECT AnimalId,Name, BirthDay, AgeAnimal(YoungAnimals.BirthDay) AS Age FROM YoungAnimals;
+-- объединение всех таблиц в одну
+
+SET FOREIGN_KEY_CHECKS=0;
+SET GLOBAL FOREIGN_KEY_CHECKS=0;
+
+CREATE TABLE AllAnimals(
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    AnimalId INT NOT NULL,
+    FOREIGN KEY (AnimalId) REFERENCES PackAnimals(AnimalsId),
+    SubAnimalId INT NOT NULL,
+    FOREIGN KEY (SubAnimalId) REFERENCES Animals(AnimalsId),
+    Name VARCHAR(20) NOT NULL,
+    BirthDay DATE NOT NULL,
+    CommandId INT NOT NULL,
+    FOREIGN KEY (CommandId) REFERENCES Commands(CommandsId)
+);
+
+SELECT * FROM Cat;
+INSERT INTO AllAnimals (AnimalId, SubAnimalId, Name, BirthDay, CommandId)
+SELECT DonkeysId,p.AnimalsId,  Name, BirthDay, CommandId FROM Donkey as c JOIN PackAnimals as p ON c.DonkeysId = p.PacksId UNION
+SELECT HorsesId,p.AnimalsId,  Name, BirthDay, CommandId FROM Horse as c JOIN PackAnimals as p ON c.HorsesId = p.PacksId UNION
+SELECT CatsId,p.AnimalsId,  Name, BirthDay, CommandId FROM Cat as c JOIN Pets as p ON c.CatsId = p.PetId UNION
+SELECT DogsId,p.AnimalsId,  Name, BirthDay, CommandId FROM Dog as c JOIN Pets as p ON c.DogsId = p.PetId UNION 
+SELECT HamstersId,p.AnimalsId,  Name, BirthDay, CommandId FROM Hamster as c JOIN Pets as p ON c.HamstersId = p.PetId;
+SELECT * FROM  AllAnimals;
+-- End Task 11
